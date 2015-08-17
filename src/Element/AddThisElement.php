@@ -23,6 +23,8 @@ class AddThisElement extends RenderElement {
     $class = get_class($this);
     return [
       '#theme' => 'addthis_element',
+      '#value' => '',
+      '#tag' => '',
       '#pre_render' => [
         [$class, 'preRenderAddThisElement'],
       ]
@@ -37,26 +39,7 @@ class AddThisElement extends RenderElement {
    * @return mixed
    */
   public static function preRenderAddThisElement($element) {
-    if (!isset($element['#value'])) {
-      $element['addthis_element'] = [
-        '#markup' => '<' . $element['#tag'] . new Attribute($element['#attributes']) . " />\n"
-      ];
-      return $element;
-    }
-
-    $output = '<' . $element['#tag'] . new Attribute($element['#attributes']) . '>';
-    if (isset($element['#value_prefix'])) {
-      $output .= $element['#value_prefix'];
-    }
-    $output .= $element['#value'];
-    if (isset($element['#value_suffix'])) {
-      $output .= $element['#value_suffix'];
-    }
-    $output .= '</' . $element['#tag'] . ">\n";
-    $element['addthis_element'] = [
-      '#markup' => $output,
-    ];
-
+    $element['content'] = $element['#value'];
     return $element;
   }
 

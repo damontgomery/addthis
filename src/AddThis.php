@@ -1,6 +1,9 @@
 <?php
 /**
  * @file
+ *
+ * Contains \Drupal\addthis\AddThis.
+ *
  * An AddThis-class.
  */
 
@@ -8,7 +11,6 @@ namespace Drupal\addthis;
 
 use Drupal\addthis\Util\AddThisJson;
 use Drupal\Component\Utility\SafeMarkup;
-use Drupal\addthis\Services\AddThisScriptManager;
 
 class AddThis {
   const BLOCK_NAME = 'addthis_block';
@@ -76,6 +78,24 @@ class AddThis {
   private $config;
 
   /**
+   * @var \Drupal\addthis\AddThisScriptManager.
+   */
+  protected $add_this_script_manager;
+
+  /**
+   * @var \Drupal\Core\Config\ConfigFactory
+   */
+  protected $config_factory;
+
+  /**
+   * @param \Drupal\addthis\AddThisScriptManager $addThisScriptManager
+   */
+  public function __construct(\Drupal\addthis\AddThisScriptManager $addThisScriptManager, \Drupal\Core\Config\ConfigFactory $configFactory){
+    $this->add_this_script_manager = $addThisScriptManager;
+    $this->config_factory = $configFactory;
+  }
+
+  /**
    * Get the singleton instance of the AddThis class.
    *
    * @return AddThis
@@ -101,7 +121,7 @@ class AddThis {
   }
 
   public function setConfig() {
-    $this->config = \Drupal::config('addthis.settings');
+    $this->config = $this->config_factory->get('addthis.settings');
   }
 
 
